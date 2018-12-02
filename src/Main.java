@@ -23,7 +23,7 @@ public class Main {
 
         System.out.println("Enter a number for d: ");
         d = reader.nextInt();
-        while(d < 0){
+        while(d < 0 || d < u){
             System.out.println("d must be greater 0 and u, try again");
             d = reader.nextInt();
         }
