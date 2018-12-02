@@ -12,7 +12,7 @@ public class Main {
             ParallelThreads.get(i).start();
         }
 
-        //Shared.mutex.acquire(); //main waits for threads to finish.
+        Shared.mutex.acquire(); //main waits for threads to finish.
         System.out.println("Running time: " + (System.currentTimeMillis()/1000) + " seconds");
 
     }
