@@ -28,9 +28,13 @@ public class Main {
             }
         }
 
-        Shared.mutex.acquire(); //main waits for threads to finish.
+        /*Shared.mutex.acquire(); //main waits for threads to finish.
+        for(int i = 0; i < Shared.results.size(); i++){
+            int num = Shared.results.get(i);
+            Shared.writeFile(num);
+        }*/
         double endTime = System.currentTimeMillis();
-        System.out.println("Results: " + Shared.results);
+        System.out.println("Results saved: " );//+ Shared.results);
         System.out.println("Running time: " + (endTime - startTime)/1000 + " seconds");
 
     }
@@ -51,6 +55,8 @@ class Shared{ //class of shared variables
     static ArrayList<Integer> results = new ArrayList<>(); //list of results
     //static int[] n = new int[M];
     static Semaphore mutex = new Semaphore(0); //main waits for threads to finish.
+    static Semaphore saveArr = new Semaphore(1); //mutex access the save file;
+
 
 
     static public void input() {
@@ -103,7 +109,7 @@ class Shared{ //class of shared variables
 
     static public void writeFile(int n){ //function to write results to txt file
         String r = Integer.toString(n);
-        try(FileWriter fw = new FileWriter("Results.txt", true);
+        try(FileWriter fw = new FileWriter("histogram.txt", true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter out = new PrintWriter(bw))
         {
