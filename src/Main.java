@@ -109,7 +109,7 @@ class Shared{ //class of shared variables
 
     static public void writeFile(int n){ //function to write results to txt file
         String r = Integer.toString(n);
-        try(FileWriter fw = new FileWriter("Results.txt", true);
+        try(FileWriter fw = new FileWriter("histogram.txt", true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter out = new PrintWriter(bw))
         {
