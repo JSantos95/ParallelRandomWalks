@@ -7,25 +7,15 @@ public class ParallelWalks implements Runnable {
     public void run() {
         try {
 
-            int n = 0;
-            int x = Shared.k;
-            int u = Shared.u;
-            int d = Shared.d;
-            Random r = new Random();
-
-            while (x > 0){
-
-                if(r.nextInt(2) == 1){
-                    x += u;
-                }else{
-                    x -= d;
-                }
-                n++;
+            for(int i= 0; i < Shared.walks; i++){
+                int n = RandomWalks();
+                //Shared.results.add(n); // saves n result to arraylist.
+                Shared.writeFile(n);  // saves n result to txt
             }
 
             System.out.println ("Thread " +
                     id +
-                    " is running, number of steps (n): " + n);
+                    " is running " + Shared.walks + " walks.");
             Shared.mutex.release(); //Changes mutex so main continues.
         }
 
@@ -37,5 +27,25 @@ public class ParallelWalks implements Runnable {
 
     public ParallelWalks(int n) {
         id = n;
+    }
+
+     int  RandomWalks(){ //randomWalks calculation, returns n when stopped
+        int n = 0;
+        int x = Shared.k;
+        int u = Shared.u;
+        int d = Shared.d;
+        Random r = new Random();
+
+        while (x > 0){
+
+            if(r.nextInt(2) == 1){
+                x += u;
+            }else{
+                x -= d;
+            }
+            n++;
+        }
+
+        return n;
     }
 }
