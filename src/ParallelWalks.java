@@ -9,8 +9,8 @@ public class ParallelWalks implements Runnable {
 
             for(int i= 0; i < Shared.walks; i++){
                 int n = RandomWalks();
-                Shared.results.add(n);
-                Shared.writeFile(n);
+                Shared.results.add(n); // saves n result to arraylist.
+                Shared.writeFile(n);  // saves n result to txt
             }
 
             System.out.println ("Thread " +
@@ -29,7 +29,7 @@ public class ParallelWalks implements Runnable {
         id = n;
     }
 
-     int  RandomWalks(){
+     int  RandomWalks(){ //randomWalks calculation, returns n when stopped
         int n = 0;
         int x = Shared.k;
         int u = Shared.u;

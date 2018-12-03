@@ -51,8 +51,6 @@ class Shared{ //class of shared variables
     static ArrayList<Integer> results = new ArrayList<>(); //list of results
     //static int[] n = new int[M];
     static Semaphore mutex = new Semaphore(0); //main waits for threads to finish.
-    //static File file = new File("test.txt");
-
 
 
     static public void input() {
@@ -106,9 +104,9 @@ class Shared{ //class of shared variables
         reader.close();
     }
 
-    static public void writeFile(int n){
+    static public void writeFile(int n){ //function to write results to txt file
         String r = Integer.toString(n);
-        try(FileWriter fw = new FileWriter("test.txt", true);
+        try(FileWriter fw = new FileWriter("Results.txt", true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter out = new PrintWriter(bw))
         {
