@@ -9,7 +9,7 @@ public class ParallelWalks implements Runnable {
 
             for(int i= 0; i < Shared.walks; i++){
                 int n = RandomWalks();
-                Shared.results.add(n); // saves n result to arraylist.
+                //Shared.results.add(n); // saves n result to arraylist.
                 Shared.writeFile(n);  // saves n result to txt
             }
 

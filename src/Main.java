@@ -83,24 +83,21 @@ class Shared{ //class of shared variables
             M = reader.nextInt();
         }
 
-        if(M < 100){ //if the number of walks is less than 100, run in one thread
-            numThreads = 1;
+
+        double remainder = Math.ceil(M % 100);
+        numThreads = M / 100 + remainder; //if M is greater than 100, divide work into number of threads
+        if(numThreads > 100){
+            System.out.println("Max threads reached. " );
+            numThreads = 100;
+            walks = Math.ceil(M/100);
+            System.out.println("Num of threads: " + numThreads);
+        }
+        else{
+            numThreads = 1; //if the number of walks is less than 100, run in one thread
             walks = M;
+            System.out.println("Num of threads: " + numThreads);
         }
-        else {
-            double remainder = Math.ceil(M % 100);
-            numThreads = M / 100 + remainder; //if M is greater than 100, divide work into number of threads
-            if(numThreads > 100){
-                System.out.println("Max threads reached. " );
-                numThreads = 100;
-                walks = Math.ceil(M/100);
-                System.out.println("Num of threads: " + numThreads);
-            }
-            else{
-                walks = Math.ceil(M/numThreads);
-                System.out.println("Num of threads: " + numThreads);
-            }
-        }
+
         reader.close();
     }
 
