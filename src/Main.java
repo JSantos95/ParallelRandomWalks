@@ -1,24 +1,33 @@
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.concurrent.Semaphore;
-import java.io.File;
+import java.util.*;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
 import java.io.BufferedWriter;
 
+class Shared{ //class of shared variables
+    static int k = 100;
+    static int u = 1;
+    static int d = 2;
+    static int M = 10000000;
+    static int T = 1000;
+    static int walks = M/T;
+    static int[][] n = new int[T][walks];
+}
+
 public class Main {
     public static void main(String[] args) throws InterruptedException {
-        Shared.input();
+        int max = 0;
+
         createThreads();
         double startTime = System.currentTimeMillis();
 
-        for (int i = 0; i < ParallelThreads.size(); i++) { //starts all Threads
-            ParallelThreads.get(i).start();
+        //for (int i = 0; i < Shared.M; i++){
+        for (int j = 0; j < ParallelThreads.size(); j++) { //starts all Threads
+            ParallelThreads.get(j).start();
         }
+        //}
 
-        for (int i = 0; i < Shared.numThreads; ++i) {
+        for (int i = 0; i < Shared.T; ++i) {
             Thread thread = ParallelThreads.get(i);
             try {
                 thread.join();
@@ -28,97 +37,77 @@ public class Main {
             }
         }
 
-        /*Shared.mutex.acquire(); //main waits for threads to finish.
-        for(int i = 0; i < Shared.results.size(); i++){
-            int num = Shared.results.get(i);
-            Shared.writeFile(num);
-        }*/
+        for(int i = 0; i < Shared.n.length; i++){ //searches for max n
+            for (int j = 0; j < Shared.walks; j++) {
+                if (Shared.n[i][j] > max)
+                    max = Shared.n[i][j];
+            }
+        }
+
+        double one = 0;
+        double[] res = new double[max]; //array for h(n)
+        for(int p = 0; p < max; p++) { //checks frequency
+            double count = 0.0;
+            for(int i = 0; i < Shared.n.length; i++){ // checks results
+                for (int j = 0; j < Shared.walks; j++) {
+                    int num = p;
+                    if (Shared.n[i][j] == num)
+                        count++;
+                }
+            }
+            res[p] = count/Shared.M;
+            one += count/Shared.M;
+        }
+
+        System.out.println(one); //check if sum of all heights are equal to 1.
+        System.out.println(max); //print max n
+
+
+        label();
+        for(int i = 0; i < max; i++){ //write to file
+            double num = res[i];
+            writeFile(i, num);
+        }
+
         double endTime = System.currentTimeMillis();
-        System.out.println("Results saved: " );//+ Shared.results);
-        System.out.println("Running time: " + (endTime - startTime)/1000 + " seconds");
+        //System.out.println("Results saved: M:" + Shared.M + " Walks: " + Shared.n.length * Shared.n[0].length);
+        System.out.println("Running time: " + (endTime - startTime)/1000 + " seconds"); //runtime is printed out
 
     }
 
     static ArrayList<Thread> ParallelThreads = new ArrayList<>(); // creates Threads.
     public static void createThreads() {
-        double maxWalks = Shared.numThreads;
+        double maxWalks = Shared.T;
         for (int i = 0; i < maxWalks; i++){
             ParallelThreads.add(new Thread(new ParallelWalks(i+1)));
         }
     }
 
-}
-
-class Shared{ //class of shared variables
-    static int k, u, d, M;
-    static double numThreads, walks;
-    static ArrayList<Integer> results = new ArrayList<>(); //list of results
-    //static int[] n = new int[M];
-    static Semaphore mutex = new Semaphore(0); //main waits for threads to finish.
-    static Semaphore saveArr = new Semaphore(1); //mutex access the save file;
-
-
-
-    static public void input() {
-        Scanner reader = new Scanner(System.in);  // Reading from System.in
-        System.out.println("Enter a number for k: ");
-        k = reader.nextInt();
-        while(k < 0){
-            System.out.println("k must be greater 0, try again");
-            k = reader.nextInt();
-        }
-
-        System.out.println("Enter a number for u: ");
-        u = reader.nextInt();
-        while(u < 0){
-            System.out.println("u must be greater 0, try again");
-            u = reader.nextInt();
-        }
-
-        System.out.println("Enter a number for d: ");
-        d = reader.nextInt();
-        while(d < u){
-            System.out.println("d must be greater 0 and u, try again");
-            d = reader.nextInt();
-        }
-
-        System.out.println("Enter a number for M: ");
-        M = reader.nextInt();
-        while(M < 0){
-            System.out.println("M must be greater 0, try again");
-            M = reader.nextInt();
-        }
-
-
-        double remainder = Math.ceil(M % 100);
-        numThreads = M / 100 + remainder; //if M is greater than 100, divide work into number of threads
-        if(numThreads > 100){
-            System.out.println("Max threads reached. " );
-            numThreads = 100;
-            walks = Math.ceil(M/100);
-            System.out.println("Num of threads: " + numThreads);
-        }
-        else{
-            numThreads = 1; //if the number of walks is less than 100, run in one thread
-            walks = M;
-            System.out.println("Num of threads: " + numThreads);
-        }
-
-        reader.close();
-    }
-
-    static public void writeFile(int n){ //function to write results to txt file
-        String r = Integer.toString(n);
+    static public void writeFile(int i, Double n){ //function to write results to txt file
+        String r = Double.toString(n);
         try(FileWriter fw = new FileWriter("histogram.txt", true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter out = new PrintWriter(bw))
         {
-            out.println(r);
+            out.print(i + "     " + r);
+            out.println();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
+
+
+    static public void label(){ //Initializes column names
+        try(FileWriter fw = new FileWriter("histogram.txt", true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter out = new PrintWriter(bw))
+        {
+            out.println("n  " + "  h(n)");
+            out.println("------------");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 
