@@ -1,25 +1,22 @@
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ParallelWalks implements Runnable {
     int id;
+    int [] arr = new int[Shared.walks];
+
 
     @Override
     public void run() {
         try {
 
             for(int i= 0; i < Shared.walks; i++){
-                int n = RandomWalks();
-                Shared.saveArr.acquire();
-                Shared.results.add(n); // saves n result to arraylist.
-                //Shared.writeFile(n);  // saves n result to txt
-                Shared.saveArr.release();
+                arr[i] = RandomWalks(); // saves n result to local arraylist.
 
             }
 
-            System.out.println ("Thread " +
-                    id +
-                    " is running " + Shared.walks + " walks.");
-            Shared.mutex.release(); //Changes mutex so main continues.
+            Shared.n[id-1] = arr; // saves to arraylist in Main
+            //System.out.println ("Thread " + id + " is running " + Shared.walks + " walks.");
         }
 
 
@@ -41,7 +38,7 @@ public class ParallelWalks implements Runnable {
 
         while (x > 0){
 
-            if(r.nextInt(2) == 1){
+            if(ThreadLocalRandom.current().nextInt(2) == 1){
                 x += u;
             }else{
                 x -= d;
@@ -50,5 +47,6 @@ public class ParallelWalks implements Runnable {
         }
 
         return n;
+
     }
 }
