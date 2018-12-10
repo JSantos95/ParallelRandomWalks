@@ -3,7 +3,7 @@ import java.io.PrintWriter;
 import java.io.IOException;
 import java.io.BufferedWriter;
 
-class Shared{ //class of shared variables
+class Data{ //class of shared variables
     static int k = 100;
     static int u = 1;
     static int d = 2;
@@ -13,9 +13,9 @@ class Shared{ //class of shared variables
     static int[][] n = new int[T][walks];
 }
 
-public class Main extends Shared {
+public class Main extends Data {
     public static void main(String[] args) throws InterruptedException {
-        double startTime = System.currentTimeMillis();
+        double startTime = System.currentTimeMillis(); //runtime start
         ParallelWalks threads[] = new ParallelWalks[T];
         int max = 0;
 
@@ -26,7 +26,7 @@ public class Main extends Shared {
         }
 
 
-        for (int i = 0; i < Shared.T; ++i) {
+        for (int i = 0; i < T; ++i) {
             ParallelWalks thread = threads[i];
             try {
                 thread.join();
@@ -36,19 +36,19 @@ public class Main extends Shared {
             }
         }
 
-        for(int i = 0; i < Shared.n.length; i++){ //searches for max n
-            for (int j = 0; j < Shared.walks; j++) {
-                if (Shared.n[i][j] > max)
-                    max = Shared.n[i][j];
+        for(int i = 0; i < n.length; i++){ //searches for max n
+            for (int j = 0; j < walks; j++) {
+                if (n[i][j] > max)
+                    max = n[i][j];
             }
         }
 
         double one = 0;
         double[] res = new double[max+1]; //array for h(n)
-        double Min = 1.0/(double)Shared.M;
-        for(int i = 0; i < Shared.n.length; i++){ // checks results
-            for (int j = 0; j < Shared.walks; j++) {
-                int num = Shared.n[i][j];
+        double Min = 1.0/(double)M;
+        for(int i = 0; i < n.length; i++){ // checks results
+            for (int j = 0; j < walks; j++) {
+                int num = n[i][j];
                 res[num] += Min;
                 one += Min;
             }

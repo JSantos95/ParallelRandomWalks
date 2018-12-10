@@ -9,10 +9,10 @@ public class ParallelWalks extends Thread {
     public void run() {
         try {
             for(int i= 0; i < walks; i++){
-                Shared.n[id-1][i] = RandomWalks(); // saves n result to local arraylist.
+                Data.n[id-1][i] = RandomWalks(); // saves n result to local arraylist.
             }
 
-            System.out.println ("Thread " + id + " is running " + Shared.walks + " walks.");
+            System.out.println ("Thread " + id + " is running " + Data.walks + " walks.");
         }
 
 
@@ -28,9 +28,9 @@ public class ParallelWalks extends Thread {
 
      int  RandomWalks(){ //randomWalks calculation, returns n when stopped
         int n = 0;
-        int x = Shared.k;
-        int u = Shared.u;
-        int d = Shared.d;
+        int x = Data.k;
+        int u = Data.u;
+        int d = Data.d;
 
         while (x > 0){
 
