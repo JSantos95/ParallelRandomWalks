@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.BufferedWriter;
 
 class Shared{ //class of shared variables
-    static int k = 1;
+    static int k = 100;
     static int u = 1;
     static int d = 2;
     static int M = 10000000;
@@ -37,7 +37,7 @@ public class Main {
             }
         }
 
-        for(int i = 0; i < Shared.n.length; i++){ //searches for max n
+        /*for(int i = 0; i < Shared.n.length; i++){ //searches for max n
             for (int j = 0; j < Shared.walks; j++) {
                 if (Shared.n[i][j] > max)
                     max = Shared.n[i][j];
@@ -65,7 +65,7 @@ public class Main {
         {
             out.println("n  " + "  h(n)");
             out.println("------------");
-            for(int i = 0; i <= max; i++){ //write to file
+            for(int i = 0; i < max; i++){ //write to file
                 double num = res[i];
                 out.println(i + "     " + num);
             }
@@ -73,7 +73,7 @@ public class Main {
         }
         catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
         double endTime = System.currentTimeMillis();
         //System.out.println("Results saved: M:" + Shared.M + " Walks: " + Shared.n.length * Shared.n[0].length);
@@ -83,9 +83,8 @@ public class Main {
 
     static ArrayList<Thread> ParallelThreads = new ArrayList<>(); // creates Threads.
     public static void createThreads() {
-        double maxWalks = Shared.T;
-        for (int i = 0; i < maxWalks; i++){
-            ParallelThreads.add(new Thread(new ParallelWalks(i+1)));
+        for (int i = 0; i < 1000; i++){
+            ParallelThreads.add(new Thread(new ParallelWalks(i+1, Shared.walks)));
         }
     }
 }

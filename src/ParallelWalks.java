@@ -3,14 +3,15 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class ParallelWalks implements Runnable {
     int id;
-    int [] arr = new int[Shared.walks];
+    int walks;
 
 
     @Override
     public void run() {
         try {
+            int [] arr = new int[walks];
 
-            for(int i= 0; i < Shared.walks; i++){
+            for(int i= 0; i < walks; i++){
                 arr[i] = RandomWalks(); // saves n result to local arraylist.
 
             }
@@ -25,8 +26,9 @@ public class ParallelWalks implements Runnable {
         }
     }
 
-    public ParallelWalks(int n) {
+    public ParallelWalks(int n, int w) {
         id = n;
+        walks = w;
     }
 
      int  RandomWalks(){ //randomWalks calculation, returns n when stopped
@@ -34,7 +36,6 @@ public class ParallelWalks implements Runnable {
         int x = Shared.k;
         int u = Shared.u;
         int d = Shared.d;
-        Random r = new Random();
 
         while (x > 0){
 
