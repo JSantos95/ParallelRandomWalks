@@ -9,10 +9,10 @@ public class ParallelWalks extends Thread {
     public void run() {
         try {
             for(int i= 0; i < walks; i++){
-                Data.n[id-1][i] = RandomWalks(); // saves n result to local arraylist.
+                Data.n[id-1][i] = RandomWalks(); // saves n result to main arraylist.
             }
 
-            System.out.println ("Thread " + id + " is running " + Data.walks + " walks.");
+            //System.out.println ("Thread " + id + " is running " + Data.walks + " walks.");
         }
 
 

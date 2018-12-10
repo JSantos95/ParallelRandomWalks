@@ -16,11 +16,12 @@ class Data{ //class of shared variables
 public class Main extends Data {
     public static void main(String[] args) throws InterruptedException {
         double startTime = System.currentTimeMillis(); //runtime start
-        ParallelWalks threads[] = new ParallelWalks[T];
+        ParallelWalks threads[] = new ParallelWalks[T]; // initiize thread array
         int max = 0;
+        double one = 0;
 
 
-        for (int j = 0; j < T; ++j) {
+        for (int j = 0; j < T; ++j) { //starts T threads
             threads[j] = new ParallelWalks(j + 1, walks);
             threads[j].start();
         }
@@ -43,7 +44,6 @@ public class Main extends Data {
             }
         }
 
-        double one = 0;
         double[] res = new double[max+1]; //array for h(n)
         double Min = 1.0/(double)M;
         for(int i = 0; i < n.length; i++){ // checks results
