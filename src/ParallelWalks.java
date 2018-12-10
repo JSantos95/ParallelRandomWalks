@@ -1,7 +1,7 @@
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class ParallelWalks implements Runnable {
+public class ParallelWalks extends Thread {
     int id;
     int walks;
 
@@ -9,14 +9,13 @@ public class ParallelWalks implements Runnable {
     @Override
     public void run() {
         try {
-            int [] arr = new int[walks];
+            //int [] arr = new int[walks];
 
             for(int i= 0; i < walks; i++){
-                arr[i] = RandomWalks(); // saves n result to local arraylist.
-
+                Shared.n[id-1][i] = RandomWalks(); // saves n result to local arraylist.
             }
 
-            Shared.n[id-1] = arr; // saves to arraylist in Main
+            //Shared.n[id-1] = arr; // saves to arraylist in Main
             //System.out.println ("Thread " + id + " is running " + Shared.walks + " walks.");
         }
 

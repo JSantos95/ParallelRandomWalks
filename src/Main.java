@@ -14,21 +14,21 @@ class Shared{ //class of shared variables
     static int[][] n = new int[T][walks];
 }
 
-public class Main {
+public class Main extends Shared {
     public static void main(String[] args) throws InterruptedException {
+        double startTime = System.currentTimeMillis();
+        ParallelWalks threads[] = new ParallelWalks[T];
         int max = 0;
 
-        createThreads();
-        double startTime = System.currentTimeMillis();
 
-        //for (int i = 0; i < Shared.M; i++){
-        for (int j = 0; j < ParallelThreads.size(); j++) { //starts all Threads
-            ParallelThreads.get(j).start();
+        for (int j = 0; j < T; ++j) {
+            threads[j] = new ParallelWalks(j + 1, walks);
+            threads[j].start();
         }
-        //}
+
 
         for (int i = 0; i < Shared.T; ++i) {
-            Thread thread = ParallelThreads.get(i);
+            ParallelWalks thread = threads[i];
             try {
                 thread.join();
             } catch (InterruptedException e) {
@@ -37,7 +37,7 @@ public class Main {
             }
         }
 
-        /*for(int i = 0; i < Shared.n.length; i++){ //searches for max n
+        for(int i = 0; i < Shared.n.length; i++){ //searches for max n
             for (int j = 0; j < Shared.walks; j++) {
                 if (Shared.n[i][j] > max)
                     max = Shared.n[i][j];
@@ -73,19 +73,12 @@ public class Main {
         }
         catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
 
         double endTime = System.currentTimeMillis();
         //System.out.println("Results saved: M:" + Shared.M + " Walks: " + Shared.n.length * Shared.n[0].length);
         System.out.println("Running time: " + (endTime - startTime)/1000 + " seconds"); //runtime is printed out
 
-    }
-
-    static ArrayList<Thread> ParallelThreads = new ArrayList<>(); // creates Threads.
-    public static void createThreads() {
-        for (int i = 0; i < 1000; i++){
-            ParallelThreads.add(new Thread(new ParallelWalks(i+1, Shared.walks)));
-        }
     }
 }
 
