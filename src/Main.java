@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.BufferedWriter;
 
 class Shared{ //class of shared variables
-    static int k = 100;
+    static int k = 1;
     static int u = 1;
     static int d = 2;
     static int M = 10000000;
@@ -45,28 +45,34 @@ public class Main {
         }
 
         double one = 0;
-        double[] res = new double[max]; //array for h(n)
-        for(int p = 0; p < max; p++) { //checks frequency
-            double count = 0.0;
-            for(int i = 0; i < Shared.n.length; i++){ // checks results
-                for (int j = 0; j < Shared.walks; j++) {
-                    int num = p;
-                    if (Shared.n[i][j] == num)
-                        count++;
-                }
+        double[] res = new double[max+1]; //array for h(n)
+        double Min = 1.0/(double)Shared.M;
+        for(int i = 0; i < Shared.n.length; i++){ // checks results
+            for (int j = 0; j < Shared.walks; j++) {
+                int num = Shared.n[i][j];
+                res[num] += Min;
+                one += Min;
             }
-            res[p] = count/Shared.M;
-            one += count/Shared.M;
         }
+
 
         System.out.println(one); //check if sum of all heights are equal to 1.
         System.out.println(max); //print max n
 
+        try(FileWriter fw = new FileWriter("histogram.txt", true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter out = new PrintWriter(bw))
+        {
+            out.println("n  " + "  h(n)");
+            out.println("------------");
+            for(int i = 0; i <= max; i++){ //write to file
+                double num = res[i];
+                out.println(i + "     " + num);
+            }
 
-        label();
-        for(int i = 0; i < max; i++){ //write to file
-            double num = res[i];
-            writeFile(i, num);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
 
         double endTime = System.currentTimeMillis();
@@ -82,32 +88,5 @@ public class Main {
             ParallelThreads.add(new Thread(new ParallelWalks(i+1)));
         }
     }
-
-    static public void writeFile(int i, Double n){ //function to write results to txt file
-        String r = Double.toString(n);
-        try(FileWriter fw = new FileWriter("histogram.txt", true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            PrintWriter out = new PrintWriter(bw))
-        {
-            out.print(i + "     " + r);
-            out.println();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    static public void label(){ //Initializes column names
-        try(FileWriter fw = new FileWriter("histogram.txt", true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            PrintWriter out = new PrintWriter(bw))
-        {
-            out.println("n  " + "  h(n)");
-            out.println("------------");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 }
 
