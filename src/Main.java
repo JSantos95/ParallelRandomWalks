@@ -75,7 +75,6 @@ public class Main extends Shared {
         }
 
         double endTime = System.currentTimeMillis();
-        //System.out.println("Results saved: M:" + Shared.M + " Walks: " + Shared.n.length * Shared.n[0].length);
         System.out.println("Running time: " + (endTime - startTime)/1000 + " seconds"); //runtime is printed out
 
     }
