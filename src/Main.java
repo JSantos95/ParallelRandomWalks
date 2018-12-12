@@ -64,7 +64,7 @@ public class Main extends Data {
         {
             out.println("n  " + "  h(n)");
             out.println("------------");
-            for(int i = 0; i < max; i++){ //write to file
+            for(int i = 0; i < max+1; i++){ //write to file
                 double num = res[i];
                 out.println(i + "     " + num);
             }
@@ -77,6 +77,22 @@ public class Main extends Data {
         double endTime = System.currentTimeMillis();
         System.out.println("Running time: " + (endTime - startTime)/1000 + " seconds"); //runtime is printed out
 
+        double mean = 0;
+        double variance = 0;
+
+        //for the mean
+        for (int n = 0; n < max+1 ; n++) {
+            mean += (n * res[n]);
+        }
+        System.out.println( "Mean: " + mean );
+
+        //variance math
+        for (int n=0; n< max+1 ; n++){
+            variance+= (n * n * res[n]);
+        }
+        variance -= (mean*mean);
+
+        System.out.println( "Variance: "+ variance );
     }
 }
 
