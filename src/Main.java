@@ -93,6 +93,8 @@ public class Main extends Data {
         variance -= (mean*mean);
 
         System.out.println( "Variance: "+ variance );
+
+
     }
 }
 
