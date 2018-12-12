@@ -64,7 +64,7 @@ public class Main extends Data {
         {
             out.println("n  " + "  h(n)");
             out.println("------------");
-            for(int i = 0; i < max; i++){ //write to file
+            for(int i = 0; i < max+1; i++){ //write to file
                 double num = res[i];
                 out.println(i + "     " + num);
             }
