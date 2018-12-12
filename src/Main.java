@@ -77,6 +77,7 @@ public class Main extends Data {
         double endTime = System.currentTimeMillis();
         System.out.println("Running time: " + (endTime - startTime)/1000 + " seconds"); //runtime is printed out
 
+        //mean and variance program
         double mean = 0;
         double variance = 0;
 
